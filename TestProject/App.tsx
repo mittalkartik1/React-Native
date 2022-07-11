@@ -12,12 +12,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
-  Image, Modal, SafeAreaView, StyleSheet,
-  Text,
+  BackHandler,
+  Image, Modal, Platform, SafeAreaView, Text,
   TextInput,
-  TouchableOpacity,
-  useColorScheme,
-  View
+  TouchableOpacity, View
 } from 'react-native';
 
 import {
@@ -29,29 +27,16 @@ import ProfileScreen from './src/app/screens/profileScreen/ProfileScreen';
 import { initLocalTranslations } from './src/app/services/i18n.service';
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
   const [modalVisible, setModalVisible] = useState(false);
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   const Tab = createBottomTabNavigator();
 
-  useEffect(() => {
-    initLocalTranslations();
-  },[]);
-
   return (
-    // <SafeAreaView style={[backgroundStyle, {flex: 1}]}>
-    // <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
     <>
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          // Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}>
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -59,7 +44,7 @@ const App = () => {
             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
               <Image source={require('./src/assets/images/close.png')} style={{ width: 20, height: 20 }} />
             </TouchableOpacity>
-            <Text style={{ marginStart: 20, fontWeight: 'bold', fontSize: 18, flex: 1 }}>Share Post</Text>
+            <Text style={{ marginStart: 20, fontWeight: 'bold', fontSize: 18, flex: 1, color: 'black' }}>Share Post</Text>
             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
               <Text>Post</Text>
             </TouchableOpacity>
@@ -72,9 +57,7 @@ const App = () => {
               <Text style={{ fontWeight: '500', fontSize: 16, marginLeft: 10 }}>Kartik Mittal</Text>
             </View>
             <TextInput blurOnSubmit multiline placeholder='What do you want to talk about' textAlignVertical='top' style={{ marginTop: 20, flex: 1, textAlignVertical: 'top' }} />
-
           </View>
-
         </SafeAreaView>
       </Modal>
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -122,27 +105,7 @@ const App = () => {
         </NavigationContainer>
       </SafeAreaView>
     </>
-    // </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

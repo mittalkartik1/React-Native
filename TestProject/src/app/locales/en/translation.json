@@ -1,0 +1,14 @@
+{
+    "home_screen": {
+        "news_feed":{
+                "post_1" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut tristique velit. Maecenas at nunc id quam lacinia congue sit amet ut risus. Praesent hendrerit volutpat bibendum. Nullam sem nisi, elementum non purus sed, blandit mollis massa. Fusce sapien dolor, accumsan ac metus ac, feugiat ultricies neque. Duis dolor risus, luctus id ullamcorper vitae, porttitor vel urna. Nam non auctor tellus. Pellentesque fermentum nisi turpis, vel vehicula tellus efficitur non. Aenean tincidunt convallis mi, nec facilisis velit efficitur non. Cras a elit neque. Cras enim augue, gravida bibendum arcu nec, tempor egestas arcu.",
+                "post_2" : "Nullam rhoncus condimentum nulla in scelerisque. Donec sit amet egestas diam. Curabitur vel libero sit amet nunc tristique tristique. Proin at odio quis erat mattis pharetra. Sed a orci nec ante rhoncus pretium nec non ex. Vestibulum sit amet ipsum gravida, cursus ex vel, ultricies sapien. Pellentesque egestas placerat nisi tincidunt maximus. Curabitur at ullamcorper orci, eget scelerisque ex. Morbi feugiat nunc non eros congue faucibus nec eu dolor.",
+                "post_3" : "Aliquam vel pharetra velit, condimentum commodo nulla. Suspendisse potenti. Nullam pretium mi eu volutpat semper. Suspendisse consectetur facilisis sem vitae varius. Sed vitae ex vitae lacus imperdiet pellentesque ut quis ipsum. Pellentesque ornare quam vel turpis efficitur suscipit. Ut vitae mi sit amet ante rutrum gravida. Maecenas sed erat massa. Nam et semper ex, eu rhoncus arcu. In dapibus tempor leo at cursus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam vitae odio mauris.",
+                "post_4" : "Curabitur faucibus ligula ex, eget vehicula enim tempus a. In lobortis pharetra nisi. Nullam accumsan dolor vel vestibulum gravida. Pellentesque vulputate velit sit amet vulputate feugiat. Etiam sem lectus, dignissim eu lacus eu, rutrum egestas eros. Cras at justo eget nisl mollis elementum nec in mauris. Morbi pulvinar quam eget nibh vestibulum, sed faucibus mauris lacinia."
+            }
+    },
+    "profile_screen" : {
+        "about_me": "Nulla facilisi. Vivamus euismod aliquam mi, nec venenatis risus. Proin hendrerit porta sapien hendrerit tristique. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed facilisis augue fringilla, posuere turpis et, pellentesque nunc. Vestibulum id leo vitae orci aliquet suscipit. Nulla ut leo non tellus tristique lacinia eu in ipsum. Duis ullamcorper vulputate nunc vel faucibus. Etiam a quam justo. Sed malesuada enim posuere, fringilla nisl eu, pellentesque nisl. Fusce elementum lectus at dui facilisis interdum. Curabitur ornare lectus ac odio mollis, ac ultricies velit pellentesque.",
+        "recommendation": "This is the recommendation that I have given to this person few days ago."
+    }
+}

@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, TextInput, View } from "react-native";
+import { initLocalTranslations, translate } from "../../services/i18n.service";
+import { styles } from "./styles";
 
 const HomeScreen = () => {
+  const [postData, setPostData] = useState<Array<{body: string}>>([]);
 
-  const getItem = () => {
+  async function initTranslations(){
+    await initLocalTranslations();
+    const tempArray = [];
+    tempArray.push({body : translate('home_screen.news_feed.post_1')});
+    tempArray.push({body : translate('home_screen.news_feed.post_2')});
+    tempArray.push({body : translate('home_screen.news_feed.post_3')});
+    tempArray.push({body : translate('home_screen.news_feed.post_4')});
+    setPostData(tempArray);
+  }
+
+  useEffect(() => {
+    initTranslations();
+  }, []);
+
+  const getItem = (item: string) => {
     return (
       <View style={{ padding: 10, backgroundColor: 'white', marginTop: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
@@ -16,8 +33,8 @@ const HomeScreen = () => {
             <Text style={{ fontSize: 10, marginLeft: 10 }}>21 Hrs</Text>
           </View>
         </View>
-        <Text style={{ marginTop: 10 }}>This is body of the post, Very long body. Very Very long.This is body of the post, Very long body. Very Very long.This is body of the post, Very long body. Very Very long.This is body of the post, Very long body. Very Very long.This is body of the post, Very long body. Very Very long.This is body of the post, Very long body. Very Very long.</Text>
-        <View style={{ borderBottomColor: '#D3D3D3', borderBottomWidth: 1, paddingBottom: 10, flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
+        <Text style={{ marginTop: 10 }}>{item}</Text>
+        <View style={styles.commentViewStyle}>
           <Text style={{ color: '#808080' }}>
             Anonymous and 178 others
           </Text>
@@ -25,29 +42,29 @@ const HomeScreen = () => {
             12 comments
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
+        <View style={styles.postFooterStyle}>
           <View style={{alignItems: 'center'}}>
             <Image
               source={require('../../../assets/images/like_icon.png')}
-              style={{ width: 20, height: 20 }} />
+              style={styles.widthHeight20} />
             <Text style={{ fontSize: 10 }}>Like</Text>
           </View>
           <View style={{alignItems: 'center'}}>
             <Image
               source={require('../../../assets/images/comment_icon.png')}
-              style={{ width: 20, height: 20 }} />
+              style={styles.widthHeight20} />
             <Text style={{ fontSize: 10 }}>Comment</Text>
           </View>
           <View style={{alignItems: 'center'}}>
             <Image
               source={require('../../../assets/images/share_icon.png')}
-              style={{ width: 20, height: 20 }} />
+              style={styles.widthHeight20} />
             <Text style={{ fontSize: 10 }}>Share</Text>
           </View>
           <View style={{alignItems: 'center'}}>
             <Image
               source={require('../../../assets/images/send_icon.png')}
-              style={{ width: 20, height: 20 }} />
+              style={styles.widthHeight20} />
             <Text style={{ fontSize: 10 }}>Send</Text>
           </View>
         </View>
@@ -57,11 +74,11 @@ const HomeScreen = () => {
 
   const getHeader = () => {
     return(
-      <View style={{backgroundColor: 'white', padding: 10, flexDirection: 'row'}}>
+      <View style={styles.headerViewStyle}>
         <Image
             source={require('../../../assets/images/profile_pic.jpeg')}
-            style={{ width: 30, height: 30, borderRadius: 30 }} />
-            <TextInput placeholder="Search..." style={{backgroundColor: '#F6F6F6', flex: 1, marginStart: 10, padding: 5}}/>
+            style={styles.headerImageStyle} />
+            <TextInput placeholder="Search..." style={styles.headerSearchStyle}/>
       </View>
     )
   }
@@ -69,8 +86,8 @@ const HomeScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        data={['abc', '', '']}
-        renderItem={getItem}
+        data={postData}
+        renderItem={({item}) => getItem(item.body)}
         ListHeaderComponent={getHeader}
       />
     </View>
