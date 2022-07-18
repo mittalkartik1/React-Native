@@ -1,4 +1,4 @@
-package com.testproject;
+package com.reactproject;
 
 import com.facebook.react.ReactActivity;
 

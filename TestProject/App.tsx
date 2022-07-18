@@ -8,28 +8,25 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  SafeAreaView, StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
-  View,
+  View
 } from 'react-native';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+  Colors
 } from 'react-native/Libraries/NewAppScreen';
+
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
 const Section: React.FC<{
   title: string;
-}> = ({children, title}) => {
+}> = ({ children, title }) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -59,36 +56,50 @@ const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? Colors.darker : Colors.white,
+    flex: 1
   };
+
+  useEffect(() => {
+    // Initializing Google SDK
+    GoogleSignin.configure({
+      webClientId: '814038083926-nr3hkpc601ljtms9dqqhmekof8db9e48.apps.googleusercontent.com',
+      offlineAccess: true,
+      scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
+    });
+  }, []);
+
+  async function onGoogleButtonPress() {
+    try {
+      await GoogleSignin.hasPlayServices()
+      console.log("===>aayaaaa");
+      // Get the users ID token
+      const {idToken} = await GoogleSignin.signIn();
+
+      console.log("===>"+idToken);
+
+      // // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // // Sign-in the user with the credential
+      const userCredentials = await auth().signInWithCredential(googleCredential);
+      console.log("===>userCreds" + JSON.stringify(userCredentials));
+    } catch (e: any) {
+      console.log("===>credsError" + JSON.stringify(e));
+    }
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+      <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <GoogleSigninButton
+          style={{ width: 312, height: 48 }}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Light}
+          onPress={onGoogleButtonPress} />
+
+      </View>
     </SafeAreaView>
   );
 };
