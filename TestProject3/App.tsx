@@ -1,115 +1,65 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
+import React from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  ImageSourcePropType,
+  SafeAreaView, StatusBar, StyleSheet, View
+} from 'react-native';
 
- import React from 'react';
- import {
-   SafeAreaView,
-   ScrollView,
-   StatusBar,
-   StyleSheet,
-   Text,
-   useColorScheme,
-   View,
- } from 'react-native';
- 
- import {
-   Colors,
-   DebugInstructions,
-   Header,
-   LearnMoreLinks,
-   ReloadInstructions,
- } from 'react-native/Libraries/NewAppScreen';
- 
- const Section: React.FC<{
-   title: string;
- }> = ({children, title}) => {
-   const isDarkMode = useColorScheme() === 'dark';
-   return (
-     <View style={styles.sectionContainer}>
-       <Text
-         style={[
-           styles.sectionTitle,
-           {
-             color: isDarkMode ? Colors.white : Colors.black,
-           },
-         ]}>
-         {title}
-       </Text>
-       <Text
-         style={[
-           styles.sectionDescription,
-           {
-             color: isDarkMode ? Colors.light : Colors.dark,
-           },
-         ]}>
-         {children}
-       </Text>
-     </View>
-   );
- };
- 
- const App = () => {
-   const isDarkMode = useColorScheme() === 'dark';
- 
-   const backgroundStyle = {
-     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-   };
- 
-   return (
-     <SafeAreaView style={backgroundStyle}>
-       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-       <ScrollView
-         contentInsetAdjustmentBehavior="automatic"
-         style={backgroundStyle}>
-         <Header />
-         <View
-           style={{
-             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-           }}>
-           <Section title="Step One">
-             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-             screen and then come back to see your edits.
-           </Section>
-           <Section title="See Your Changes">
-             <ReloadInstructions />
-           </Section>
-           <Section title="Debug">
-             <DebugInstructions />
-           </Section>
-           <Section title="Learn More">
-             Read the docs to discover what to do next:
-           </Section>
-           <LearnMoreLinks />
-         </View>
-       </ScrollView>
-     </SafeAreaView>
-   );
- };
- 
- const styles = StyleSheet.create({
-   sectionContainer: {
-     marginTop: 32,
-     paddingHorizontal: 24,
-   },
-   sectionTitle: {
-     fontSize: 24,
-     fontWeight: '600',
-   },
-   sectionDescription: {
-     marginTop: 8,
-     fontSize: 18,
-     fontWeight: '400',
-   },
-   highlight: {
-     fontWeight: '700',
-   },
- });
- 
- export default App;
+
+const App = () => {
+
+  const styles = StyleSheet.create({
+    loaderStyle: {
+      position: 'absolute', 
+      left: 0, 
+      right: 0, 
+      top: 0, 
+      bottom: 0
+    },
+    soundIconStyle: {
+      height: 40, 
+      width: 40, 
+      tintColor: 'white'
+    },
+    crossViewStyle: { 
+      backgroundColor: 'white', 
+      borderRadius: 8, 
+      height: 30, 
+      width: 30, 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      marginStart: 20, 
+      marginTop: 10 }
+  });
+
+  const CustomView = (props: { path: ImageSourcePropType }) => {
+    return (
+      <View>
+        <ActivityIndicator animating color={'white'} size={80} style={styles.loaderStyle} />
+        <Image source={props.path} style={styles.soundIconStyle} />
+      </View>
+    );
+  }
+
+  return (
+    <SafeAreaView style={{ backgroundColor: 'red', flex: 1 }}>
+      <StatusBar backgroundColor={'#495DC0'} barStyle={'light-content'} />
+      <View style={{ backgroundColor: '#495DC0', flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <View style={styles.crossViewStyle}>
+            <Image source={require('./app/assets/images/close.png')} style={{ height: 20, width: 20, tintColor: '#495DC0' }} />
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 30 }}>
+          <CustomView path={require('./app/assets/images/drop.png')} />
+          <CustomView path={require('./app/assets/images/rainbow.png')} />
+          <CustomView path={require('./app/assets/images/cloud.png')} />
+          <CustomView path={require('./app/assets/images/thunder.png')} />
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default App;
