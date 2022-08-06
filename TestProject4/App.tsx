@@ -1,120 +1,87 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
+  NativeModules,
+  SafeAreaView, StatusBar, StyleSheet, Text,
+  TextInput,
+  ToastAndroid,
+  TouchableOpacity,
   useColorScheme,
-  View,
+  View
 } from 'react-native';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+  Colors
 } from 'react-native/Libraries/NewAppScreen';
-
-import Crypto from 'react-native-crypto-js';
-import axios from 'axios';
-import Buffer from 'buffer';
-
-const Section: React.FC<{
-  title: string;
-}> = ({ children, title }) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [state, setState] = useState({text: '', encryptedText: '', decryptedText: ''})
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   };
 
-  
+  async function encryptData() {
+    if(state.text.length <= 0){
+      ToastAndroid.show("Enter text first", ToastAndroid.SHORT);
+      return;
+    }
+    try {
+      const output = await NativeModules.NativeAppModule.encrypt(state.text);
+      setState(prevState => ({...prevState, encryptedText: output}));
+    } catch (e: any) {
+      ToastAndroid.show("Some error occured", ToastAndroid.SHORT);  
+    }
+  }
+
+  async function decryptData() {
+    if(state.encryptedText.length <= 0){
+      ToastAndroid.show("Encrypt some data first", ToastAndroid.SHORT);
+      return;
+    }
+    try {
+      const input = await NativeModules.NativeAppModule.decrypt(state.encryptedText);
+      setState(prevState => ({...prevState, decryptedText: input}));
+    } catch (e: any) {
+      ToastAndroid.show("Some error occured", ToastAndroid.SHORT);
+    }
+  }
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 12 }}>
+        <TextInput
+          style={styles.textInputStyle}
+          placeholder='Enter any text'
+          multiline
+          onChangeText={(value) => setState(prevState => ({...prevState, text: value}))}
+        />
+        <TouchableOpacity style={{ width: '100%' }} onPress={encryptData}>
+          <View style={styles.buttonViewStyle}>
+            <Text style={{ color: 'white' }}>Encrypt</Text>
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.boldTextStyle}>Encrypted Text:</Text>
+        <Text style={styles.textStyle}>{state.encryptedText}</Text>
+        <TouchableOpacity style={{ width: '100%' }} onPress={decryptData}>
+          <View style={styles.buttonViewStyle}>
+            <Text style={{ color: 'white' }}>Decrypt</Text>
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.boldTextStyle}>Decrypted Text:</Text>
+        <Text style={styles.textStyle}>{state.decryptedText}</Text>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  boldTextStyle: { marginTop: 20, fontWeight: 'bold', fontSize: 14, color: 'black', alignSelf: 'flex-start' },
+  buttonViewStyle: { backgroundColor: '#2c50ff', padding: 12, borderRadius: 20, alignItems: 'center', marginTop: 20 },
+  textStyle: { marginTop: 5, fontSize: 14, color: 'black', alignSelf: 'flex-start' },
+  textInputStyle: { borderColor: '#2c50ff', borderWidth: 1, borderRadius: 20, width: '100%', paddingHorizontal: 12 }
+})
 
 export default App;

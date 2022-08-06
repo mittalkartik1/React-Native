@@ -10,11 +10,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "axios": "^0.27.2",
-    "buffer": "^6.0.3",
     "react": "17.0.2",
-    "react-native": "0.67.4",
-    "react-native-crypto-js": "^1.0.0"
+    "react-native": "0.67.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
