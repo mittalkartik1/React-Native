@@ -7,6 +7,7 @@ export const AppStyles = {
     subtitle: "#545454",
     tint: "#ff5a66",
     grey: "grey",
+    error: "red"
   },
   fontSize: {
     title: 30
@@ -21,9 +22,9 @@ export const AppStyles = {
 
 export const styles = StyleSheet.create({
   grayTextRight: { color: '#808080', textAlign: 'right' },
-  boldTextRight: { fontWeight: 'bold', fontSize: 18, textAlign: 'right' },
+  boldTextRight: { fontWeight: 'bold', fontSize: 18, textAlign: 'right', color: 'black' },
   graytextLeft: { color: '#808080' },
-  font18bold: { fontWeight: 'bold', fontSize: 18 },
+  font18bold: { fontWeight: 'bold', fontSize: 18, color: 'black' },
   parentViewStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -40,7 +41,6 @@ export const styles = StyleSheet.create({
   lineHeight21: { lineHeight: 21 },
   inputViewStyle: {
     borderRadius: 8,
-    borderColor: '#e6e6e6',
     borderWidth: 1,
     padding: 8,
     backgroundColor: '#fafafa',
@@ -48,7 +48,8 @@ export const styles = StyleSheet.create({
   },
   textInputStyle: {
     borderBottomColor: '#808080',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    padding: 0
   },
   rowViewStyle: {
     flexDirection: 'row',
@@ -68,5 +69,17 @@ export const styles = StyleSheet.create({
     marginTop: 25,
     marginHorizontal: 40,
     alignItems: 'center'
+  },
+  submitButtonStyle: {
+    padding: 12,
+    backgroundColor: '#2c50ff',
+    borderRadius: 20,
+    marginTop: 25,
+    marginHorizontal: 0,
+    alignItems: 'center'
+  },
+  errorStyle: {
+    textAlign: 'left',
+    color: 'red',
   }
 });

@@ -1,0 +1,47 @@
+[
+    {
+        "credit_type" : "Simple Credit",
+        "loan_type" : "Cash Loan",
+        "bank_name" : "Bank of America",
+        "total_amount" : "50000",
+        "rate" : "13.00",
+        "monthly_payment" : "1177",
+        "period" : "18"
+    },
+    {
+        "credit_type" : "Monthly Credit",
+        "loan_type" : "Home Loan",
+        "bank_name" : "Bank of India",
+        "total_amount" : "40000",
+        "rate" : "10.00",
+        "monthly_payment" : "2233",
+        "period" : "15"
+    },
+    {
+        "credit_type" : "Yearly Credit",
+        "loan_type" : "Car Loan",
+        "bank_name" : "Bank of Russia",
+        "total_amount" : "150000",
+        "rate" : "12.00",
+        "monthly_payment" : "8777",
+        "period" : "7"
+    },
+    {
+        "credit_type" : "Daily Credit",
+        "loan_type" : "Study Loan",
+        "bank_name" : "Bank of Japan",
+        "total_amount" : "240000",
+        "rate" : "11.00",
+        "monthly_payment" : "1188",
+        "period" : "10"
+    },
+    {
+        "credit_type" : "Random Credit",
+        "loan_type" : "Personal Loan",
+        "bank_name" : "Bank of China",
+        "total_amount" : "500000",
+        "rate" : "15.00",
+        "monthly_payment" : "9999",
+        "period" : "20"
+    }
+]

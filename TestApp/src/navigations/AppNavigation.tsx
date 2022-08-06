@@ -11,19 +11,24 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import UpcomingPaymentScreen from '../screens/PaymentScreen';
 import { LoanFormScreen } from '../screens/LoanFormScreen';
 import { AppStyles } from '../styles/AppStyles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const RootNavigator = () => {
   const Stack = createNativeStackNavigator();
   return (
-    <Stack.Navigator initialRouteName='SignupScreen' screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="SignupScreen"
-        component={SignupScreen}
-      />
-      <Stack.Screen name="TabScreen" component={MyTabs} />
-      <Stack.Screen name="LoanFormScreen" component={LoanFormScreen} />
-    </Stack.Navigator>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Stack.Navigator initialRouteName='SignupScreen' screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="SignupScreen"
+          component={SignupScreen}
+        />
+        <Stack.Screen name="TabScreen" component={MyTabs} />
+        <Stack.Screen name="LoanFormScreen" component={LoanFormScreen} />
+
+      </Stack.Navigator>
+    </SafeAreaView>
+
   );
 }
 
@@ -42,13 +47,13 @@ function MyTabs() {
             icon = require('../../assets/icons/home_icon.png');
           } else if (route.name === 'Search') {
             icon = require('../../assets/icons/search_icon.png');
-          }else if (route.name === 'Loans') {
+          } else if (route.name === 'Loans') {
             icon = require('../../assets/icons/loan_icon.png');
-          }else if (route.name === 'Profile') {
+          } else if (route.name === 'Profile') {
             icon = require('../../assets/icons/profile_icon.png');
           }
 
-          return <Image source={icon} style={{height: 25, width: 25, tintColor: tintColor}} />;
+          return <Image source={icon} style={{ height: 25, width: 25, tintColor: tintColor }} />;
         },
         tabBarActiveTintColor: AppStyles.color.primary,
         tabBarInactiveTintColor: AppStyles.color.grey,
