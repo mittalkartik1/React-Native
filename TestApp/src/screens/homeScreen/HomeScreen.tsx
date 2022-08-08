@@ -9,11 +9,11 @@ import {
 import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
-import { UserData } from './src/model/UserDataModel';
+import { UserData } from '../../model/UserDataModel';
 import SelectDropdown from 'react-native-select-dropdown'
+import { styles } from './styles';
 
-
-const App = () => {
+const HomeScreen = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [state, setState] = useState<UserData | null>(null);
   const [character, setCharacter] = useState<any>(null);
@@ -163,10 +163,4 @@ const App = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  width100: {width: '100%'},
-  inputStyle: { padding: 12, borderRadius: 5, borderColor: '#e4e4e4', borderWidth: 1 },
-  profilePicStyle: { width: 100, height: 100, borderRadius: 50 }
-});
-
-export default App;
+export default HomeScreen;
