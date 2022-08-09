@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import {
   NativeModules,
+  Platform,
   SafeAreaView, StatusBar, StyleSheet, Text,
   TextInput,
   ToastAndroid,
   TouchableOpacity,
   useColorScheme,
-  View
+  View,
+  Alert
 } from 'react-native';
 
 import {
@@ -24,27 +26,35 @@ const App = () => {
 
   async function encryptData() {
     if(state.text.length <= 0){
-      ToastAndroid.show("Enter text first", ToastAndroid.SHORT);
+      showMessage("Enter text first");
       return;
     }
     try {
       const output = await NativeModules.NativeAppModule.encrypt(state.text);
       setState(prevState => ({...prevState, encryptedText: output}));
     } catch (e: any) {
-      ToastAndroid.show("Some error occured", ToastAndroid.SHORT);  
+      showMessage("Some error occured");  
     }
   }
 
   async function decryptData() {
     if(state.encryptedText.length <= 0){
-      ToastAndroid.show("Encrypt some data first", ToastAndroid.SHORT);
+      showMessage("Encrypt some data first");
       return;
     }
     try {
       const input = await NativeModules.NativeAppModule.decrypt(state.encryptedText);
       setState(prevState => ({...prevState, decryptedText: input}));
     } catch (e: any) {
-      ToastAndroid.show("Some error occured", ToastAndroid.SHORT);
+      showMessage("Some error occured");
+    }
+  }
+
+  function showMessage(msg: string){
+    if(Platform.OS === 'android'){
+      ToastAndroid.show(msg, ToastAndroid.SHORT);
+    }else if(Platform.OS === 'ios'){
+      Alert.alert(msg);
     }
   }
 
