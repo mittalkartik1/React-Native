@@ -1,60 +1,19 @@
-import React, { useEffect } from 'react';
-import {
-  Button,
-  SafeAreaView,
-  StatusBar,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+import AppNavigator from './src/navigation/AppNavigator';
+import { store } from './src/redux/store';
 
-import {
-  Colors
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => { 
 
-import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
-
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: '287455497152-n6ckc1roqddf39urrqp9jfhl8skk0253.apps.googleusercontent.com',
-      offlineAccess: true,
-      scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
-    });
-  }, []);
-
-  async function onGoogleButtonPress() {
-    // Get the users ID token
-    try{
-    const { idToken } = await GoogleSignin.signIn();
-
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-    // Sign-in the user with the credential
-    
-      const response = await auth().signInWithCredential(googleCredential);
-      console.log("response"+JSON.stringify(response));
-    }catch(e: any){
-      console.log("errrror"+JSON.stringify(e));
-    }  
-  }
+  const reduxStore = store;
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <GoogleSigninButton
-          style={{ width: 312, height: 48 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Light}
-          onPress={onGoogleButtonPress} />
-    </SafeAreaView>
+    <Provider store={reduxStore}>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>      
+    </Provider>
   );
 };
 
