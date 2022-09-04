@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import AppNavigator from './src/navigation/AppNavigator';
 import { store } from './src/redux/store';
+import { appNavRef } from './src/utils/LoaderUtil';
 
 const App = () => { 
 
@@ -11,7 +12,7 @@ const App = () => {
   return (
     <Provider store={reduxStore}>
       <NavigationContainer>
-        <AppNavigator />
+        <AppNavigator ref={appNavRef}/>
       </NavigationContainer>      
     </Provider>
   );

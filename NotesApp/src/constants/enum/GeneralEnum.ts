@@ -4,5 +4,12 @@ export enum STRINGS {
 }
 
 export enum SCREENS {
-    'LOGIN_SCREEN' = 'LoginScreen'
+    'LOGIN_SCREEN' = 'LoginScreen',
+    'NOTES_LIST_SCREEN' = 'NotesListScreen',
+    'NOTES_DETAIL_SCREEN' = 'NotesDetailScreen'
+}
+
+export enum COLORS {
+    'PRIMARY' = '#1D71F2',
+    'SHADOW' = '#7B7A72'
 }
