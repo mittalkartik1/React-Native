@@ -13,7 +13,7 @@ function* fetchNotes({ payload }: any) : any {
             if(payload?.sortNotes){
                 const userNotes = yield call(() => firestore().collection('users').doc(payload.email).collection('notes').orderBy('createdAt', 'asc').get());
                 userNotes.forEach((item: any) => {
-                    const notesObject = {id: item.id, title: item.data().noteTitle, body: item.data().noteBody}
+                    const notesObject = {id: item.id, title: decrypt(item.data().noteTitle), body: decrypt(item.data().noteBody)}
                     notesArray.push(notesObject);
                 })
             }else{

@@ -65,8 +65,7 @@ export const styles = StyleSheet.create({
   },
   plusImageStyle: {
     height: 60, 
-    width: 60, 
-    zIndex: 12, 
+    width: 60,
     tintColor: COLORS.PRIMARY
   },
   detailViewStyle: {
@@ -107,5 +106,10 @@ export const styles = StyleSheet.create({
     marginHorizontal: 12, 
     fontSize: 16, 
     color: 'black'
+  },
+  listNoteTitleStyle: {
+    color: 'white', 
+    fontWeight: 'bold', 
+    fontSize: 18
   }
 });

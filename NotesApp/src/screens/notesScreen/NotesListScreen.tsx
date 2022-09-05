@@ -26,7 +26,7 @@ const NotesListScreen = ({navigation} : any) => {
         return (
             <TouchableOpacity style={styles.flex1} onPress={() => navigation.navigate(SCREENS.NOTES_DETAIL_SCREEN, {isNew: false, note: item})}>
                 <View style={styles.noteItemStyle}>
-                    <Text>{item.title}</Text>
+                    <Text style={styles.listNoteTitleStyle}>{item.title}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -78,7 +78,7 @@ const NotesListScreen = ({navigation} : any) => {
                 ItemSeparatorComponent={() => <View style={styles.itemSeperatorStyle}></View>}
                 columnWrapperStyle={{ flexWrap: 'wrap' }}
             />
-            <TouchableOpacity onPress={() => navigation.navigate(SCREENS.NOTES_DETAIL_SCREEN, {isNew: true})}>
+            <TouchableOpacity onPressIn={() => navigation.navigate(SCREENS.NOTES_DETAIL_SCREEN, {isNew: true})}>
                 <View style={styles.plusViewStyle}>
                     <Image
                         style={styles.plusImageStyle}

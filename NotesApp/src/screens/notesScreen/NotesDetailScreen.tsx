@@ -8,35 +8,35 @@ import { getReduxState } from "../../redux/store";
 import { showMessage } from "../../utils/LoaderUtil";
 import { styles } from "./styles";
 
-const NotesDetailScreen = (props : any) => {
-    const [{isEditable, isNew}, setNoteState] = useState({isEditable: false, isNew: false});
-    const [note, setNote] = useState<Note>({id: '', title: '', body: ''});
+const NotesDetailScreen = (props: any) => {
+    const [{ isEditable, isNew }, setNoteState] = useState({ isEditable: false, isNew: false });
+    const [note, setNote] = useState<Note>({ id: '', title: '', body: '' });
     const dispatch = useDispatch();
-    const {email} = getReduxState().notes;
+    const { email } = getReduxState().notes;
 
     useEffect(() => {
-        if(props.route.params.isNew){
-            setNoteState({isEditable: true, isNew: true});
-        }else{
+        if (props.route.params.isNew) {
+            setNoteState({ isEditable: true, isNew: true });
+        } else {
             setNote(props.route.params.note);
         }
     }, [])
 
-    function onSaveClick(){
-        if(note.title.length === 0){
+    function onSaveClick() {
+        if (note.title.length === 0) {
             showMessage('Enter note title first!!');
-        }else if(note.body.length === 0){
+        } else if (note.body.length === 0) {
             showMessage('Enter note body first!!');
-        }else{
-            if(isNew){
-                dispatch(addNote(email, {noteTitle: note.title, noteBody: note.body }, props.navigation.goBack));
-            }else{
-                dispatch(editNote(email, note.id, {noteTitle: note.title, noteBody: note.body}, props.navigation.goBack));
+        } else {
+            if (isNew) {
+                dispatch(addNote(email, { noteTitle: note.title, noteBody: note.body }, props.navigation.goBack));
+            } else {
+                dispatch(editNote(email, note.id, { noteTitle: note.title, noteBody: note.body }, props.navigation.goBack));
             }
         }
     }
 
-    function onDeleteClick(){
+    function onDeleteClick() {
         //alert can be added later            
         dispatch(deleteNote(email, note.id, props.navigation.goBack));
     }
@@ -51,16 +51,21 @@ const NotesDetailScreen = (props : any) => {
                             source={require('../../assets/images/left_arrow.png')} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => setNoteState((prevState) => ({...prevState, isEditable: true}))}>
-                    <Image
-                        style={styles.editImageStyle}
-                        source={require('../../assets/images/pencil.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={onDeleteClick}>
-                    <Image
-                        style={styles.editImageStyle}
-                        source={require('../../assets/images/delete.png')} />
-                </TouchableOpacity>
+                {
+                    !isNew &&
+                    <>
+                        <TouchableOpacity onPress={() => setNoteState((prevState) => ({ ...prevState, isEditable: true }))}>
+                            <Image
+                                style={styles.editImageStyle}
+                                source={require('../../assets/images/pencil.png')} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={onDeleteClick}>
+                            <Image
+                                style={styles.editImageStyle}
+                                source={require('../../assets/images/delete.png')} />
+                        </TouchableOpacity>
+                    </>
+                }
                 <TouchableOpacity onPress={onSaveClick}>
                     <Image
                         style={styles.saveImageStyle}
@@ -72,7 +77,7 @@ const NotesDetailScreen = (props : any) => {
                 editable={isEditable}
                 placeholderTextColor={'gray'}
                 value={note.title}
-                onChangeText={(text: string) => setNote((prevState) => ({...prevState, title: text}))}
+                onChangeText={(text: string) => setNote((prevState) => ({ ...prevState, title: text }))}
                 style={styles.noteTitleStyle}
             />
             <TextInput
@@ -81,7 +86,7 @@ const NotesDetailScreen = (props : any) => {
                 editable={isEditable}
                 placeholderTextColor={'gray'}
                 value={note.body}
-                onChangeText={(text: string) => setNote((prevState) => ({...prevState, body: text}))}
+                onChangeText={(text: string) => setNote((prevState) => ({ ...prevState, body: text }))}
                 style={styles.noteBodyStyle}
             />
         </View>
