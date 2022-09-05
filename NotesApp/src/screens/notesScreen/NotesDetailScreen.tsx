@@ -1,49 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, TextInput, TouchableOpacity, View } from "react-native";
-import { showFullScreenLoader } from "../../utils/LoaderUtil";
+import { useDispatch } from "react-redux";
+import { STRINGS } from "../../constants/enum/GeneralEnum";
+import { Note } from "../../constants/interfaces/Note";
+import { addNote, deleteNote, editNote } from "../../redux/actions/notesAction";
+import { getReduxState } from "../../redux/store";
+import { showMessage } from "../../utils/LoaderUtil";
+import { styles } from "./styles";
 
-const NotesDetailScreen = () => {
+const NotesDetailScreen = (props : any) => {
+    const [{isEditable, isNew}, setNoteState] = useState({isEditable: false, isNew: false});
+    const [note, setNote] = useState<Note>({id: '', title: '', body: ''});
+    const dispatch = useDispatch();
+    const {email} = getReduxState().notes;
 
-    const [isEditable, setIsEditable] = useState(false);
+    useEffect(() => {
+        if(props.route.params.isNew){
+            setNoteState({isEditable: true, isNew: true});
+        }else{
+            setNote(props.route.params.note);
+        }
+    }, [])
+
+    function onSaveClick(){
+        if(note.title.length === 0){
+            showMessage('Enter note title first!!');
+        }else if(note.body.length === 0){
+            showMessage('Enter note body first!!');
+        }else{
+            if(isNew){
+                dispatch(addNote(email, {noteTitle: note.title, noteBody: note.body }, props.navigation.goBack));
+            }else{
+                dispatch(editNote(email, note.id, {noteTitle: note.title, noteBody: note.body}, props.navigation.goBack));
+            }
+        }
+    }
+
+    function onDeleteClick(){
+        //alert can be added later            
+        dispatch(deleteNote(email, note.id, props.navigation.goBack));
+    }
 
     return (
-        <View style={{ flex: 1 }}>
-            <View style={{ height: 50, paddingHorizontal: 12, flexDirection: 'row', borderBottomColor: 'black', borderBottomWidth: 1, alignItems: 'center' }}>
-                <View style={{ flex: 1 }}>
-                    <TouchableOpacity onPress={() => showFullScreenLoader(true)}>
+        <View style={styles.container}>
+            <View style={styles.detailViewStyle}>
+                <View style={styles.flex1}>
+                    <TouchableOpacity onPress={props.navigation.goBack}>
                         <Image
-                            style={{ height: 24, width: 24, tintColor: 'red' }}
+                            style={styles.backImageStyle}
                             source={require('../../assets/images/left_arrow.png')} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => setIsEditable(true)}>
+                <TouchableOpacity onPress={() => setNoteState((prevState) => ({...prevState, isEditable: true}))}>
                     <Image
-                        style={{ height: 20, width: 20, tintColor: 'red', marginRight: 20 }}
+                        style={styles.editImageStyle}
                         source={require('../../assets/images/pencil.png')} />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={onDeleteClick}>
                     <Image
-                        style={{ height: 20, width: 20, tintColor: 'red', marginRight: 20 }}
+                        style={styles.editImageStyle}
                         source={require('../../assets/images/delete.png')} />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={onSaveClick}>
                     <Image
-                        style={{ height: 25, width: 25, tintColor: 'red' }}
+                        style={styles.saveImageStyle}
                         source={require('../../assets/images/save.png')} />
                 </TouchableOpacity>
             </View>
             <TextInput
-                placeholder="Note Title"
+                placeholder={STRINGS.NOTE_TITLE}
                 editable={isEditable}
                 placeholderTextColor={'gray'}
-                style={{marginHorizontal: 12, fontWeight: 'bold', fontSize: 24, color: 'black'}}
+                value={note.title}
+                onChangeText={(text: string) => setNote((prevState) => ({...prevState, title: text}))}
+                style={styles.noteTitleStyle}
             />
             <TextInput
-                placeholder="Enter note"
+                placeholder={STRINGS.ENTER_NOTE}
                 multiline
                 editable={isEditable}
                 placeholderTextColor={'gray'}
-                style={{marginHorizontal: 12, fontSize: 16, color: 'black'}}
+                value={note.body}
+                onChangeText={(text: string) => setNote((prevState) => ({...prevState, body: text}))}
+                style={styles.noteBodyStyle}
             />
         </View>
     );

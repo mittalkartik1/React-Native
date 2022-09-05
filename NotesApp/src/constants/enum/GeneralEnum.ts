@@ -13,3 +13,10 @@ export enum COLORS {
     'PRIMARY' = '#1D71F2',
     'SHADOW' = '#7B7A72'
 }
+
+export enum STRINGS { //strings can be handled via i18next later
+    'NO_NOTES' = 'No Notes Added',
+    'NOTE_TITLE' = 'Note Title',
+    'ENTER_NOTE' = 'Enter note',
+    'ENCRYPTION_KEY' = 'encryption_key'
+}

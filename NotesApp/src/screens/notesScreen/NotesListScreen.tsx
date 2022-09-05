@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { AppState, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { COLORS } from "../../constants/enum/GeneralEnum";
+import { SCREENS, STRINGS } from "../../constants/enum/GeneralEnum";
+import { Note } from "../../constants/interfaces/Note";
+import { NotesType } from "../../constants/interfaces/NotesType";
+import { fetchAllNotes } from "../../redux/actions/notesAction";
 import { RootState } from "../../redux/store";
+import { styles } from "./styles";
+import auth from '@react-native-firebase/auth';
+import { showFullScreenLoader } from "../../utils/LoaderUtil";
 
-const NotesListScreen = () => {
+const NotesListScreen = ({navigation} : any) => {
     const dispatch = useDispatch();
-    const notes : any = useSelector((state : RootState) => state.notes);
+    const notes : NotesType = useSelector((state : RootState) => state.notes);
     const [isFetched, setIsFetched] = useState(false);
 
     useEffect(() => {
-        dispatch({type: 'fetch_notes', payload: 'mittalkartik1@gmail.com'})
         if(notes.email && !isFetched){
             setIsFetched(true);
-            dispatch({'type': 'fetch_notes', 'payload': notes.email})
+            dispatch(fetchAllNotes(notes.email))
         }
     }, [notes]);
 
-    const notesItem = () => {
+    const notesItem = (item: Note) => {
         return (
-            <TouchableOpacity style={{ flex: 1 }}>
-                <View style={{ flex: 1, backgroundColor: 'red', marginHorizontal: 6, borderRadius: 8, height: 125, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text>Note x</Text>
+            <TouchableOpacity style={styles.flex1} onPress={() => navigation.navigate(SCREENS.NOTES_DETAIL_SCREEN, {isNew: false, note: item})}>
+                <View style={styles.noteItemStyle}>
+                    <Text>{item.title}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -29,39 +34,54 @@ const NotesListScreen = () => {
 
     const emptyView = () => {
         return(
-            <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                <Text style={{fontWeight: 'bold', fontSize: 18, color: COLORS.PRIMARY}}>No Notes Added</Text>
+            <View style={styles.centralize}>
+                <Text style={styles.noteTextStyle}>{STRINGS.NO_NOTES}</Text>
             </View>
         );
     }
 
+    async function logoutUser() {
+        try{
+            showFullScreenLoader(true);
+            await auth().signOut();            
+            navigation.navigate(SCREENS.LOGIN_SCREEN);
+        }catch(e: any){} finally{showFullScreenLoader(false);}
+    }
+
+    function sortNotes(){
+        dispatch(fetchAllNotes(notes.email, true))
+    }
+
     return (
-        <View style={{ flex: 1 }}>
-            <View style={{ height: 50, paddingHorizontal: 12, justifyContent: 'flex-end', flexDirection: 'row', borderBottomColor: COLORS.SHADOW, borderBottomWidth: 1, alignItems: 'center' }}>
-                <TouchableOpacity>
+        <View style={styles.container}>
+            <View style={styles.mainViewStyle}>
+                {
+                    notes.notes.length > 0 &&                
+                    <TouchableOpacity onPress={sortNotes}>
+                        <Image
+                            style={styles.sortImageStyle}
+                            source={require('../../assets/images/sort.png')} />
+                    </TouchableOpacity>
+                }
+                <TouchableOpacity onPress={logoutUser}>
                     <Image
-                        style={{ height: 20, width: 20, tintColor: COLORS.PRIMARY, marginRight: 12 }}
-                        source={require('../../assets/images/sort.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Image
-                        style={{ height: 25, width: 25, tintColor: COLORS.PRIMARY }}
+                        style={styles.logoutImageStyle}
                         source={require('../../assets/images/logout.png')} />
                 </TouchableOpacity>
             </View>
             <FlatList
-                data={[]}
-                renderItem={({ item }) => notesItem()}
+                data={notes.notes}
+                renderItem={({ item }) => notesItem(item)}
                 numColumns={2}
                 ListEmptyComponent={emptyView}
-                contentContainerStyle={{ marginTop: 12, marginHorizontal: 6, flex: 1 }}
-                ItemSeparatorComponent={() => <View style={{ width: 12, height: 12 }}></View>}
+                contentContainerStyle={styles.listContainerStyle}
+                ItemSeparatorComponent={() => <View style={styles.itemSeperatorStyle}></View>}
                 columnWrapperStyle={{ flexWrap: 'wrap' }}
             />
-            <TouchableOpacity>
-                <View style={{justifyContent: 'center', width: 60, height: 60, position: 'absolute', alignItems: 'center', bottom: 20, right: 20, borderRadius: 40, borderWidth: 1, borderColor: 'red' }}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREENS.NOTES_DETAIL_SCREEN, {isNew: true})}>
+                <View style={styles.plusViewStyle}>
                     <Image
-                        style={{height: 60, width: 60, zIndex: 12, tintColor: COLORS.PRIMARY }}
+                        style={styles.plusImageStyle}
                         source={require('../../assets/images/plus.png')} />
                 </View>
             </TouchableOpacity>

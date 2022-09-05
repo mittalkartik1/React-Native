@@ -15,4 +15,5 @@ export const store = configureStore({
 sagaMiddleWare.run(reduxSagas);
 
 export type RootState = ReturnType<typeof store.getState>
+export const getReduxState = () => store.getState();
 export type AppDispatch = typeof store.dispatch;

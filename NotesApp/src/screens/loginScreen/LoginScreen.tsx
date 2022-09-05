@@ -1,6 +1,6 @@
 import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import React, { useEffect } from 'react';
-import { Button, Text, View } from 'react-native';
+import { View } from 'react-native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { SCREENS, STRINGS } from '../../constants/enum/GeneralEnum';
 import { styles } from './styles';
@@ -10,6 +10,7 @@ import { showFullScreenLoader } from '../../utils/LoaderUtil';
 const LoginScreen = ({navigation} : any) => {
 
     const dispatch = useDispatch();
+    let isNavigated = false;
 
     useEffect(() => {
         showFullScreenLoader(true);
@@ -26,11 +27,14 @@ const LoginScreen = ({navigation} : any) => {
     }, []);
 
     function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
-        console.log("===>user"+JSON.stringify(user));
         showFullScreenLoader(false);
-        if(!!user?.email){
+        if(!!user?.email && !isNavigated){
+            isNavigated = true;
             dispatch({'type': 'register_email', 'payload' : user.email})
-            navigation.navigate(SCREENS.NOTES_LIST_SCREEN)
+            navigation.reset({
+                index: 0,
+                routes: [{ name: SCREENS.NOTES_LIST_SCREEN }]
+           })
         }
     }
 
@@ -38,10 +42,8 @@ const LoginScreen = ({navigation} : any) => {
         try {
             const { idToken } = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-            const response = await auth().signInWithCredential(googleCredential);
-        } catch (e: any) {
-            console.log("errrror" + JSON.stringify(e));
-        }
+            await auth().signInWithCredential(googleCredential);
+        } catch (e: any) {}
     }
 
     return (
